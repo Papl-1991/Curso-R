@@ -1,253 +1,278 @@
-########################################################################################
-#############################        CURSO R- BÁSICO       ############################# 
-#############################          Clase 5             ############################# 
-######################################################################################## 
-## Matrices extra
-######################################################################################## 
-
-# A propósito, un método parecido de crear matrices es tomando un vector y 
-# modificar su atributo de dimensiones, de la siguiente manera:
-x <- 1:20         # Crea un vector con una secuencia de 1 a 20
-dim(x) <- c(4, 5) # Al vector creado le adjudicamos dimensiones: número de 
-# filas y columnas.
-x
-
-
-## Operaciones con vectores
-
-# Cuando se multiplican vectores por matrices, utilizando el operador normal 
-# *, hay que tener precauciones respecto los tamaños de los objetos, ya que si 
-# no corremos el iesgo de caer en errores. En todo caso, lo que R hace es 
-# simplemente considerar a la matriz como un vector y hacer la operación 
-# elemento por elemento (yendo por las columnas), reciclando los valores del 
-# vector original para parear todos los elementos de la matriz:
-x <- matrix(1:20, 4, 5)
-x * c(-1, 0, 1, 0, -1)
-x + c(-100, 0)
-# En general no es recomendable recurrir a este tipo de operaciones a menos
-# que sea absolutamente necesario.
-
-######################################################################################## 
-###               La clase data.frame                                                ###
-######################################################################################## 
-
-# La clase "data.frame" es un tipo particular de lista, en la que todos los 
-# objetos tienen la misma cantidad de elementos, pero mantienen la libertad de 
-# pertenecer a distintas clases. Es básicamente una tabla de datos, en donde 
-# las filas son casos y las columnas variables. De hecho, vamos a llamar 
-# "columnas" o "variables" indistintamente para referirnos a las columnas de un
-# data.frame.
-
-## ¿Cómo crear data.frame?
-
-# Para crear data.frames de cero la función data.frame es una opción de uso 
-# frecuente, la cual funciona de forma muy similar a list. Veamos un ejemplo:
-dd <- data.frame(1:10, seq(.1, 1, by=.1))
-names(dd)<-c("enteros","decimales")
-dd
-
-d <- data.frame(enteros=1:10, decimales=seq(.1, 1, by=.1))
-d
-#     enteros decimales
-#1        1       0.1
-#2        2       0.2
-#3        3       0.3
-#4        4       0.4
-#5        5       0.5
-#6        6       0.6
-#7        7       0.7
-#8        8       0.8
-#9        9       0.9
-#10      10       1.0
-# El resultado es una tabla con dos columnas llamadas "enteros" y "decimales". 
-
-# Nótese que estos son dos vectores de clases diferentes:
-head(d) # La función head devuelve los primeros elementos
-tail(d) # La función tail devuelve los últimos elementos
-class(d)
-class(d$enteros)
-class(d$decimales)
-
-# Nótese también que el uso del operador $ es idéntico al caso de las 
-# listas. Una característica de las data.frame que las diferencia de las 
-# matrices es que necesariamente deben tener las columnas nombradas. Nótese 
-# que tanto en matrices como en data.frames las columnas se pueden nombrar 
-# usando colnames (equivalente a names si se trata de un data.frame) y que las 
-# filas también se pueden nombrar, usando rownames.
-
-# Las funciones genéricas str y summary son opciones muy útiles para ver la 
-# data.frame de forma resumida:
-str(d)
-summary(d)
-
-######################################################################################## 
-#Crear un data frame con el nombre data1 con 4 variables y 10 datos
-###1era variable de tipo double
-###2da variable de tipo character
-###3era variable de tipo integer
-###4ta variable de tipo lógico
-### cada objeto con su respectivo nombre
-## Analizar la esrtuctura del dataframe (str & summary)
-######################################################################################## 
-
-# Adicionalmente, es bastante común transformar matrices (objetos de la clase 
-# "matrix") en data.frames, utilizando el coercionador as.data.frame de la 
-# siguiente manera:
-m <- matrix(1:25, 5, 5)
-as.data.frame(m) 
-
-# De todas maneras, tal vez la forma más común de incorporar una data.frame a 
-# una sesión de R es importando una tabla de datos, ya que al hacerlo 
-# (usualmente con las funciones read.table o read.csv) R devuelve objetos de 
-# esta clase.
-
-# Para mostrar los ejemplos de esta lección nos basaremos en algunas tablas de 
-# datos que ya vienen incluidas en el R básico (específicamente en el paquete 
-# 'datasets'). Las data.frames "cars" e "iris" son las que usaremos aquí 
-# particularmente.
-
-View(cars)
-View(iris)
-summary(cars)
-str(iris)
-
-## Índices y data.frames
-
-# En muchos sentidos un data.frame se comporta en forma similar a un objeto de
-# clase "matrix". En particular, la forma de usar los índices es 
-# prácticamente idéntica: hay que especificar filas y columnas (y en ese orden).
-# Por ejemplo:
-iris[1,]
-iris[2, 5]
-
-# También sirven las funciones cbind y rbind, para pegar nuevos elementos, por 
-# columnas o filas respectivamente. Por ejemplo, sabiendo que iris tiene 150 
-# filas (lo que se puede averiguar con nrow o dim), puedo agregarle una nueva 
-# variable llamada "nuevaCol" con cbind de la manera siguiente:
-
-
-x <- cbind(iris, nuevaCol=1:150)
-head(x)
-# Nótese cómo se nombró la nueva columna en el momento de agregarla.
-
-######################################################################################## 
-#crar una nueva data que es:
-#la data1  agregada dos nuevas variables(vectores columnas) sin ningún nombre
-# y despuués cambiar el nombre a v1 & v2 respectivamente
-# obtener los últimos valores de la nueva data
-######################################################################################## 
-
-# Es entonces importante recordar que más allá de similitudes, matrices y 
-# data.frames *no* son la misma cosa.
-
-# Resumen:
-# Las listas y los data.frames son dos estructuras muy convenientes para
-# trabajar con datos. Su complejidad no es significativamente mayor al de las
-# matrices y sin embargo tienen diferencias que van a probar ser cruciales para
-# facilitar un diálogo fluido en análisis estadísticos y el trabajo con datos.
-
-
-# Al igual que con las listas comunes, el operador $ sirve para llamar las
-# variables por sus nombres, en el caso de que los tengan:
-cars$speed
-iris$Petal.Length
-
-# Y al igual que en las listas también se puede usar los números entre corche-
-# tes dobles:
-cars[[1]]
-iris[[3]]
-
-######################################################################################## 
-#acceder a la variable v1 (de dos maneras diferentes)
-# guardar en una nueva variable la variable v2
-# ver solamnete los primeros 5 valores de la variable v1
-######################################################################################## 
-
-class(cars$speed) # "numeric"
-
-# Aunque no todo está permitido ...
-rbind(cars, matrix(0, 4, 2)) # El problema está en la diferencia de nombres.
-
-
-# Los atributos y las clases de los objetos son frecuentes causantes de errores
-# y confusiones. Existen objetos que tienen atributos de varias clases, ya que
-# hay clases que heredan y/o comparten atributos con otras.
-# Un caso clarísimo es la clase "data.frame", la cual tiene varias facilidades
-# para trabajar con datos que la hacen superior a la clase "matrix" para dichas
-# tareas, a pesar de que tienen muchas cosas en común.
-# Una consecuencia de esta similitud es que muchas operaciones con matrices son
-# iguales con data.frames:
-datos  <- data.frame(x=rnorm(6), y=rnorm(6, mean=3))
-matriz <- as.matrix(datos) 
-datos[1,2] == matriz[1,2]        # Usan el mismo sistema de índices
-cbind(datos, rnorm(6, mean=10))  # Funcionan igual con cbind y rbind
-cbind(matriz, rnorm(6, mean=10))
-
-
-######################################################################################## 
-## Factores
-######################################################################################## 
-# Los objetos de clase "factor" son objetos que sirven para trabajar con varia-
-# bles categóricas, como pueden ser franjas etarias, nombres de especies o
-# lugares. Una forma de comprender el concepto de factor es pensando en su uso
-# dentro del diseño experimental: un factor es una variable cuyo efecto se busca
-# entender; en un experimento se crean distintos tratamientos, cada uno con un
-# nivel determinado para dicho factor. Estos tratamientos equivalen al concepto
-# de niveles o "levels" utilizado en los objetos "factor" de R.
-
-# Ejemplo: efecto del nitrógeno en el crecimiento de un cultivo. Un
-# tratamiento puede ser sin N y otro con N. Entonces tenemos un factor ("N")
-# con dos niveles (que pueden ser denominados 0 y 1, o de cualquier otra
-# forma).
-# Creación de un factor si se dispone de un vector integer
-vec <- c(1, 2, 2, 1, 2, 1, 2)
-vec
-fac <- factor(vec, levels=c(1,2), labels = c("Femenino", "Masculino"))
-fac
-# Observamos que fac asiganamos la etiqueta Femenino a los datos iguales a 1
-# y Masculino a los datos igales a 2
-
-# levels= c(    1     ,     2   )
-#labels = c("Femenino", "Masculino")
-
-# Creación de un factor si se dispone de un vector character
-vec <- c("Femenino","Masculino","Masculino","Femenino","Masculino",
-         "Femenino","Masculino")
-vec
-fac <- factor(vec, levels= c("Femenino", "Masculino"), labels=c(1, 0))
-fac
-class(fac)
-# Observamos que fac asiganamos la etiqueta 1 a los datos iguales a Femenino y
-# 0  a los datos igales a Masculino
-
-
-# por defecto labels = levels, si no se setea el valor labels= se toma el 
-#valor por default
-fac <- factor(vec, levels= c("Femenino", "Masculino"))
-fac
-# Es decir si no se pone la etiqueta los datos originales se mantienen
-######################################################################################## 
-## Dado el vector vec1 <-c(1,3,1,2,2,3 2, 2,1,2,3 1,3,1,2,1, 2, 1,3,3 2,1)
-## Crear un factor con el nombre fact1 en el cual
-### Se le asigne la etiqueta "Pronto pago" a los datos iguales a 1
-### Se le asigne la etiqueta "pago a tiempo" a los datos iguales a 2
-### Se le asigne la etiqueta "deuda" a los datos iguales a 3
-######################################################################################## 
-
-# Para obtener los atributos de un factor utilizamos attributes().
-vec <- c(1, 2, 2, 1, 2, 1, 2)
-fac <- factor(vec, levels=c(1,2), labels = c("Femenino", "Masculino"))
-attributes(fac)
-
-# Para realizar conteos por categoría, se utiliza la función table().
-# tabla de frecuencias
-table(fac)
-# tabla de porcentaje porcentaje
-prop.table(table(fac))
-######################################################################################## 
-# Obtener la tabla de frecuencias y porcentaje de fact1
-# Crear un factor propio. y analizar su tabla de frecuencias
-######################################################################################## 
++########################################################################################
+ +#############################        CURSO R- BÁSICO       ############################# 
+ +#############################          Clase 5             ############################# 
+ +######################################################################################## 
+ +## Matrices extra
+ +######################################################################################## 
+ +
+ +# A propósito, un método parecido de crear matrices es tomando un vector y 
+ +# modificar su atributo de dimensiones, de la siguiente manera:
+ +x <- 1:20         # Crea un vector con una secuencia de 1 a 20
+ +dim(x) <- c(4, 5) # Al vector creado le adjudicamos dimensiones: número de 
+ +# filas y columnas.
+ +x
+ +
+ +
+ +## Operaciones con vectores
+ +
+ +# Cuando se multiplican vectores por matrices, utilizando el operador normal 
+ +# *, hay que tener precauciones respecto los tamaños de los objetos, ya que si 
+ +# no corremos el iesgo de caer en errores. En todo caso, lo que R hace es 
+ +# simplemente considerar a la matriz como un vector y hacer la operación 
+ +# elemento por elemento (yendo por las columnas), reciclando los valores del 
+ +# vector original para parear todos los elementos de la matriz:
+ +x <- matrix(1:20, 4, 5)
+ +x * c(-1, 0, 1, 0, -1)
+ +x + c(-100, 0)
+ +# En general no es recomendable recurrir a este tipo de operaciones a menos
+ +# que sea absolutamente necesario.
+ +
+ +######################################################################################## 
+ +###               La clase data.frame                                                ###
+ +######################################################################################## 
+ +
+ +# La clase "data.frame" es un tipo particular de lista, en la que todos los 
+ +# objetos tienen la misma cantidad de elementos, pero mantienen la libertad de 
+ +# pertenecer a distintas clases. Es básicamente una tabla de datos, en donde 
+ +# las filas son casos y las columnas variables. De hecho, vamos a llamar 
+ +# "columnas" o "variables" indistintamente para referirnos a las columnas de un
+ +# data.frame.
+ +
+ +## ¿Cómo crear data.frame?
+ +
+ +# Para crear data.frames de cero la función data.frame es una opción de uso 
+ +# frecuente, la cual funciona de forma muy similar a list. Veamos un ejemplo:
+ +dd <- data.frame(1:10, seq(.1, 1, by=.1))
+ +names(dd)<-c("enteros","decimales")
+ +dd
+ +
+ +d <- data.frame(enteros=1:10, decimales=seq(.1, 1, by=.1))
+ +d
+ +#     enteros decimales
+ +#1        1       0.1
+ +#2        2       0.2
+ +#3        3       0.3
+ +#4        4       0.4
+ +#5        5       0.5
+ +#6        6       0.6
+ +#7        7       0.7
+ +#8        8       0.8
+ +#9        9       0.9
+ +#10      10       1.0
+ +# El resultado es una tabla con dos columnas llamadas "enteros" y "decimales". 
+ +
+ +# Nótese que estos son dos vectores de clases diferentes:
+ +head(d) # La función head devuelve los primeros elementos
+ +tail(d) # La función tail devuelve los últimos elementos
+ +class(d)
+ +class(d$enteros)
+ +class(d$decimales)
+ +
+ +# Nótese también que el uso del operador $ es idéntico al caso de las 
+ +# listas. Una característica de las data.frame que las diferencia de las 
+ +# matrices es que necesariamente deben tener las columnas nombradas. Nótese 
+ +# que tanto en matrices como en data.frames las columnas se pueden nombrar 
+ +# usando colnames (equivalente a names si se trata de un data.frame) y que las 
+ +# filas también se pueden nombrar, usando rownames.
+ +
+ +# Las funciones genéricas str y summary son opciones muy útiles para ver la 
+ +# data.frame de forma resumida:
+ +str(d)
+ +summary(d)
+ +View(d)
+ +
+ +######################################################################################## 
+ +#Crear un data frame con el nombre data1 con 4 variables y 10 datos
+ +###1era variable de tipo double
+ +###2da variable de tipo character
+ +###3era variable de tipo integer
+ +###4ta variable de tipo lógico
+ +### cada objeto con su respectivo nombre
+ +## Analizar la esrtuctura del dataframe (str & summary)
+ +
+ +data1 <- data.frame(primera=c(1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5), segunda=c("ab","ba","ca","ad","ea","fa","ga","ha","ai","ja"), tercera=1:10 , cuarta=c(T,F,T,F,T,T,F,F,T,T))
+ +str(data1)
+ +summary(data1)
+ +
+ +######################################################################################## 
+ +
+ +# Adicionalmente, es bastante común transformar matrices (objetos de la clase 
+ +# "matrix") en data.frames, utilizando el coercionador as.data.frame de la 
+ +# siguiente manera:
+ +m <- matrix(1:25, 5, 5)
+ +as.data.frame(m) 
+ +
+ +# De todas maneras, tal vez la forma más común de incorporar una data.frame a 
+ +# una sesión de R es importando una tabla de datos, ya que al hacerlo 
+ +# (usualmente con las funciones read.table o read.csv) R devuelve objetos de 
+ +# esta clase.
+ +
+ +# Para mostrar los ejemplos de esta lección nos basaremos en algunas tablas de 
+ +# datos que ya vienen incluidas en el R básico (específicamente en el paquete 
+ +# 'datasets'). Las data.frames "cars" e "iris" son las que usaremos aquí 
+ +# particularmente.
+ +
+ +View(cars)
+ +View(iris)
+ +summary(cars)
+ +str(iris)
+ +
+ +d <- cars
+ +d$speed[1:20]
+ +
+ +## Índices y data.frames
+ +
+ +# En muchos sentidos un data.frame se comporta en forma similar a un objeto de
+ +# clase "matrix". En particular, la forma de usar los índices es 
+ +# prácticamente idéntica: hay que especificar filas y columnas (y en ese orden).
+ +# Por ejemplo:
+ +iris[1,]
+ +iris[2, 5]
+ +
+ +# También sirven las funciones cbind y rbind, para pegar nuevos elementos, por 
+ +# columnas o filas respectivamente. Por ejemplo, sabiendo que iris tiene 150 
+ +# filas (lo que se puede averiguar con nrow o dim), puedo agregarle una nueva 
+ +# variable llamada "nuevaCol" con cbind de la manera siguiente:
+ +
+ +
+ +x <- cbind(iris, nuevaCol=1:150)
+ +head(x)
+ +# Nótese cómo se nombró la nueva columna en el momento de agregarla.
+ +
+ +carstiempo <- cbind(cars, tiempo=1:50)
+ +carstiempo
+ +
+ +######################################################################################## 
+ +#crar una nueva data que es:
+ +#la data1  agregada dos nuevas variables(vectores columnas) sin ningún nombre
+ +# y despuués cambiar el nombre a v1 & v2 respectivamente
+ +# obtener los últimos valores de la nueva data
+ +
+ +
+ +data2 <- cbind(data1, seq(10,46,4), c(1,1,1,1,1,1,1,1,1,1))
+ +names(data2)[5] <- "quinta"
+ +names(data2)[6] <- "sexta"
+ +data2
+ +tail(data2)
+ +
+ +######################################################################################## 
+ +
+ +# Es entonces importante recordar que más allá de similitudes, matrices y 
+ +# data.frames *no* son la misma cosa.
+ +
+ +# Resumen:
+ +# Las listas y los data.frames son dos estructuras muy convenientes para
+ +# trabajar con datos. Su complejidad no es significativamente mayor al de las
+ +# matrices y sin embargo tienen diferencias que van a probar ser cruciales para
+ +# facilitar un diálogo fluido en análisis estadísticos y el trabajo con datos.
+ +
+ +
+ +# Al igual que con las listas comunes, el operador $ sirve para llamar las
+ +# variables por sus nombres, en el caso de que los tengan:
+ +cars$speed
+ +iris$Petal.Length
+ +
+ +# Y al igual que en las listas también se puede usar los números entre corche-
+ +# tes dobles:
+ +cars[[1]]
+ +iris[[3]]
+ +
+ +######################################################################################## 
+ +#acceder a la variable v1 (de dos maneras diferentes)
+ +# guardar en una nueva variable la variable v2
+ +# ver solamnete los primeros 5 valores de la variable v1
+ +######################################################################################## 
+ +
+ +class(cars$speed) # "numeric"
+ +
+ +# Aunque no todo está permitido ...
+ +rbind(cars, matrix(0, 4, 2)) # El problema está en la diferencia de nombres.
+ +
+ +
+ +# Los atributos y las clases de los objetos son frecuentes causantes de errores
+ +# y confusiones. Existen objetos que tienen atributos de varias clases, ya que
+ +# hay clases que heredan y/o comparten atributos con otras.
+ +# Un caso clarísimo es la clase "data.frame", la cual tiene varias facilidades
+ +# para trabajar con datos que la hacen superior a la clase "matrix" para dichas
+ +# tareas, a pesar de que tienen muchas cosas en común.
+ +# Una consecuencia de esta similitud es que muchas operaciones con matrices son
+ +# iguales con data.frames:
+ +datos  <- data.frame(x=rnorm(6), y=rnorm(6, mean=3))
+ +matriz <- as.matrix(datos) 
+ +datos[1,2] == matriz[1,2]        # Usan el mismo sistema de índices
+ +cbind(datos, rnorm(6, mean=10))  # Funcionan igual con cbind y rbind
+ +cbind(matriz, rnorm(6, mean=10))
+ +
+ +
+ +######################################################################################## 
+ +## Factores
+ +######################################################################################## 
+ +# Los objetos de clase "factor" son objetos que sirven para trabajar con varia-
+ +# bles categóricas, como pueden ser franjas etarias, nombres de especies o
+ +# lugares. Una forma de comprender el concepto de factor es pensando en su uso
+ +# dentro del diseño experimental: un factor es una variable cuyo efecto se busca
+ +# entender; en un experimento se crean distintos tratamientos, cada uno con un
+ +# nivel determinado para dicho factor. Estos tratamientos equivalen al concepto
+ +# de niveles o "levels" utilizado en los objetos "factor" de R.
+ +
+ +# Ejemplo: efecto del nitrógeno en el crecimiento de un cultivo. Un
+ +# tratamiento puede ser sin N y otro con N. Entonces tenemos un factor ("N")
+ +# con dos niveles (que pueden ser denominados 0 y 1, o de cualquier otra
+ +# forma).
+ +# Creación de un factor si se dispone de un vector integer
+ +vec <- c(1, 2, 2, 1, 2, 1, 2)
+ +vec
+ +fac <- factor(vec, levels=c(1,2), labels = c("Femenino", "Masculino"))
+ +fac
+ +# Observamos que fac asiganamos la etiqueta Femenino a los datos iguales a 1
+ +# y Masculino a los datos igales a 2
+ +
+ +# levels= c(    1     ,     2   )
+ +#labels = c("Femenino", "Masculino")
+ +
+ +# Creación de un factor si se dispone de un vector character
+ +vec <- c("Femenino","Masculino","Masculino","Femenino","Masculino",
+ +         "Femenino","Masculino")
+ +vec
+ +fac <- factor(vec, levels= c("Femenino", "Masculino"), labels=c(1, 0))
+ +fac
+ +class(fac)
+ +# Observamos que fac asiganamos la etiqueta 1 a los datos iguales a Femenino y
+ +# 0  a los datos igales a Masculino
+ +
+ +
+ +# por defecto labels = levels, si no se setea el valor labels= se toma el 
+ +#valor por default
+ +fac <- factor(vec, levels= c("Femenino", "Masculino"))
+ +fac
+ +# Es decir si no se pone la etiqueta los datos originales se mantienen
+ +######################################################################################## 
+ +## Dado el vector vec1 <-c(1,3,1,2,2,3 2, 2,1,2,3 1,3,1,2,1, 2, 1,3,3 2,1)
+ +## Crear un factor con el nombre fact1 en el cual
+ +### Se le asigne la etiqueta "Pronto pago" a los datos iguales a 1
+ +### Se le asigne la etiqueta "pago a tiempo" a los datos iguales a 2
+ +### Se le asigne la etiqueta "deuda" a los datos iguales a 3
+ +
+ +vec1 <- c(1, 3, 1, 2, 2, 3, 2, 2, 1, 2, 3, 1, 3, 1, 2, 1, 2, 1, 3, 3, 2, 1)
+ +fact1 <- factor(vec1, levels=c(1, 2, 3), labels=c("Pronto pago", "Pago a tiempo", "Deuda"))
+ +fact1
+ +
+ +######################################################################################## 
+ +
+ +# Para obtener los atributos de un factor utilizamos attributes().
+ +vec <- c(1, 2, 2, 1, 2, 1, 2)
+ +fac <- factor(vec, levels=c(1,2), labels = c("Femenino", "Masculino"))
+ +attributes(fac)
+ +
+ +# Para realizar conteos por categoría, se utiliza la función table().
+ +# tabla de frecuencias
+ +table(fac)
+ +# tabla de porcentaje porcentaje
+ +prop.table(table(fac))
+ +######################################################################################## 
+ +# Obtener la tabla de frecuencias y porcentaje de fact1
+ +# Crear un factor propio. y analizar su tabla de frecuencias
+ +######################################################################################## 
 
 
 
