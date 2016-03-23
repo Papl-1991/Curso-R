@@ -79,7 +79,6 @@ class(d$decimales)
 # data.frame de forma resumida:
 str(d)
 summary(d)
-View(d)
 
 ######################################################################################## 
 #Crear un data frame con el nombre data1 con 4 variables y 10 datos
@@ -89,11 +88,6 @@ View(d)
 ###4ta variable de tipo lógico
 ### cada objeto con su respectivo nombre
 ## Analizar la esrtuctura del dataframe (str & summary)
-
-data1 <- data.frame(primera=c(1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5), segunda=c("ab","ba","ca","ad","ea","fa","ga","ha","ai","ja"), tercera=1:10 , cuarta=c(T,F,T,F,T,T,F,F,T,T))
-str(data1)
-summary(data1)
-
 ######################################################################################## 
 
 # Adicionalmente, es bastante común transformar matrices (objetos de la clase 
@@ -117,9 +111,6 @@ View(iris)
 summary(cars)
 str(iris)
 
-d <- cars
-d$speed[1:20]
-
 ## Índices y data.frames
 
 # En muchos sentidos un data.frame se comporta en forma similar a un objeto de
@@ -139,22 +130,11 @@ x <- cbind(iris, nuevaCol=1:150)
 head(x)
 # Nótese cómo se nombró la nueva columna en el momento de agregarla.
 
-carstiempo <- cbind(cars, tiempo=1:50)
-carstiempo
-
 ######################################################################################## 
 #crar una nueva data que es:
 #la data1  agregada dos nuevas variables(vectores columnas) sin ningún nombre
 # y despuués cambiar el nombre a v1 & v2 respectivamente
 # obtener los últimos valores de la nueva data
-
-
-data2 <- cbind(data1, seq(10,46,4), c(1,1,1,1,1,1,1,1,1,1))
-names(data2)[5] <- "quinta"
-names(data2)[6] <- "sexta"
-data2
-tail(data2)
-
 ######################################################################################## 
 
 # Es entonces importante recordar que más allá de similitudes, matrices y 
@@ -252,11 +232,6 @@ fac
 ### Se le asigne la etiqueta "Pronto pago" a los datos iguales a 1
 ### Se le asigne la etiqueta "pago a tiempo" a los datos iguales a 2
 ### Se le asigne la etiqueta "deuda" a los datos iguales a 3
-
-vec1 <- c(1, 3, 1, 2, 2, 3, 2, 2, 1, 2, 3, 1, 3, 1, 2, 1, 2, 1, 3, 3, 2, 1)
-fact1 <- factor(vec1, levels=c(1, 2, 3), labels=c("Pronto pago", "Pago a tiempo", "Deuda"))
-fact1
-
 ######################################################################################## 
 
 # Para obtener los atributos de un factor utilizamos attributes().
@@ -357,6 +332,7 @@ read.table(file = "ejemplo1.txt", header = TRUE, sep = "\t", dec = ".")
 #   confusiones entre separadores de columnas y decimales, por lo que hay que 
 #   estar atento a estos detalles.
 
+setwd("C:/Users/Usuario2-/Desktop/R/read_data")
 
 # Existen otros argumentos en la función 'read.table' como row.names (para
 # ponerle nombre a las filas), col.names (para ponerle nombres a las columnas
@@ -369,7 +345,19 @@ args(read.table)
 # mismas propiedades de cualquier objeto de esta clase. Para mantener el
 # objeto en el área de trabajo hay que asignarlo:
 ej1 <- read.table(file = "data.txt", header = TRUE, sep = "\t", dec = ".")
-head(ej1)
+head(ej1,1)
+class(ej1)
+View(head(ej1,5))
+colnames(ej1)
+
+ej1_sub <- NULL
+
+eje1_sub <- cbind(ej1[,1:2],ej1[,4])
+head(eje1_sub,1) #la ultima columna no se guarda con el nombre, mejor usar data frame!
+
+eje1_sub <- data.frame(ej1$Identificacion, ej1$Edad, ej1$Genero)
+head(eje1_sub,1)
+
 # Ahora importaremos un archivo pero en formato csv. En principio la única 
 # diferencia es que el separador es un punto y coma generalmente (si 
 # trabajamos con programas de planilla de cálculo en español). Habiendo
@@ -385,28 +373,54 @@ head(ej2)
 # prolijo a la hora de elejir.
 
 ej3 <- read.csv(file = "data.csv")
-head(ej3)
+head(ej3,1)
+
 # archivo formato xlsx
 install.packages("readxl", dependencies = TRUE)
 library(readxl)
+
 #funciones del paquete
 ls("package:readxl")
+
 #sheet= el numero de hoja o el nombre de la hoja
 # na=" " considera el espacio como dato perdido
 #col_names similar al header de read.table
 ej4 <- read_excel("data.xlsx",sheet = "datos",col_names = TRUE, na=c(""))
-head(ej4)
+head(ej4,1)
+View(head(ej4,5))
+
 # archivos spss formato .sav
 install.packages("foreign", dependencies = TRUE)
 library(foreign)
 ls("package:foreign")
 data_sav1 <- read.spss("data_read.sav", use.value.labels = TRUE, 
                        to.data.frame = TRUE)
-install.packages("haven", dependencies = TRUE)
+View(head(data_sav1,5))
+
+
 # spss: read_spss(), sas: read_sas(), stata: read_dta()
+install.packages("haven", dependencies = TRUE)
 library(haven)
 ls("package:haven")
 data_sav2 <- read_spss("data_read.sav")
+View(head(data_sav2,5))
 #####################################################################################
 # Leer todos los demás archivos dentro de la carpeta
+
+# ej1 <- read.table(file = "data.txt", header = TRUE, sep = "\t", dec = ".")
+# ej3 <- read.csv(file = "data.csv")
+# ej4 <- read_excel("data.xlsx",sheet = "datos",col_names = TRUE, na=c(""))
+
+# ej2  <- read.table(file = "data_read.csv",sep = ",", dec = ".", header = TRUE)
+# data_sav1 <- read.spss("data_read.sav", use.value.labels = TRUE, to.data.frame = TRUE)
+# data_sav2 <- read_spss("data_read.sav")
+
+read1 <- data_sav2 <- read_spss("data.sav")
+View(head(read1,5))
+
+read2 <- read_excel("data_read.xlsx",sheet = "datos",col_names = TRUE, na=c(""))
+View(head(read2,5))
+read3 <- read.table(file = "data_read.txt", header = TRUE, sep = "\t", dec = ".")
+View(head(read3,5))
+
 #####################################################################################
