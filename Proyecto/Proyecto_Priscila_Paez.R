@@ -6,6 +6,12 @@ require(graphics)
 
 # https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/swiss.html
 
+# http://www-hsc.usc.edu/~eckel/biostat2/labs/lab8.pdf
+# https://www.coursehero.com/file/11781745/Assignment-1/
+
+# https://opr.princeton.edu/archive/pefp/switz.aspx
+# https://opr.princeton.edu/archive/pefp/sw1888.aspx
+
 pairs(swiss, panel = panel.smooth, main = "swiss data",
       col = 3 + (swiss$Catholic > 50))
 
