@@ -1,0 +1,59 @@
+---
+title: "Indicadores Socioeconómicos y de Fertilidad en Suiza 1888"
+author: "Priscila Páez"
+bibliography: bibliography.bib
+date: "28 de marzo de 2016"
+output: pdf_document
+---
+
+# Descripción
+
+Se va a trabajar con una base de datos que contiene mediciones de fertilidad e indicadores socioeconómicos para cada una de las 47 provincias de habla francesa en Suiza en el año 1888.
+
+## Formato de la base de datos
+
+Se tiene una base de datos con 47 observaciones en 6 variables. Todas las variables, excepto *Fertility*, dan propociones de la población total del país.
+
+
+Columna           | Descripción
+------------------|------------
+Fertility	(Ig)    | Medida estandarizada de fertilidad. Índice de fertilidad marital.
+Agriculture       | Porcentaje de varones cuya ocupación es la agricultura.
+Examination       | Porcentaje de reclutas que obtuvieron la nota mas alta en examen militar
+Catholic          | Porcentaje de Católicos (en contraste con Protestantes)
+Infant.Mortality  | índice de mortalidad infantil, bebés que viven menos de 1 año.
+
+## Detalles
+
+En el año 1888, Suiza estaba empezando un periodo conocido como *transición demográfica*; por ejemplo se notaba que su fertilidad estaba empezando a decrecer del nivel elevado característico de paises subdesarrollados [@Mosteller].
+
+
+Here, all variables are scaled to [0, 100], where in the original, all but "Catholic" were scaled to [0, 1].
+
+Note
+
+Files for all 182 districts in 1888 and other years have been available at https://opr.princeton.edu/archive/pefp/switz.aspx.
+
+They state that variables Examination and Education are averages for 1887, 1888 and 1889.
+
+Source
+
+Project “16P5”, pages 549–551 in
+
+Mosteller, F. and Tukey, J. W. (1977) Data Analysis and Regression: A Second Course in Statistics. Addison-Wesley, Reading Mass.
+
+indicating their source as “Data used by permission of Franice van de Walle. Office of Population Research, Princeton University, 1976. Unpublished data assembled under NICHD contract number No 1-HD-O-2077.”
+
+References
+
+Becker, R. A., Chambers, J. M. and Wilks, A. R. (1988) The New S Language. Wadsworth & Brooks/Cole.
+
+```{r}
+summary(cars)
+```
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+# Referencias
